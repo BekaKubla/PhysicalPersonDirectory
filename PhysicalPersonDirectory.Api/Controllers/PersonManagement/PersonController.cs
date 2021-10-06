@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhysicalPersonDirectory.Application.PersonManagement.Command.PersonCommand;
+using PhysicalPersonDirectory.Application.PersonManagement.Query.PersonQuery;
+using PhysicalPersonDirectory.Application.ViewModels.PersonVm;
 using PhysicalPersonDirectory.Domain.Entities;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
@@ -30,17 +31,22 @@ namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
 
             return NotFound();
         }
-        [HttpGet("Persons")]
-        public async Task<IEnumerable<Person>> GetPersons()
-        {
+        //[HttpGet("Persons")]
+        //public async Task<IEnumerable<PersonReadModel>> GetPersons()
+        //{
 
-            return await mediator.Send(new GetPersonsCommand());
-        }
+        //}
         [HttpGet("person/{id}")]
         public async Task<IActionResult> GetPersonById(int id)
         {
 
-            return Ok(await mediator.Send(new GetPersonByIdCommand() { Id = id }));
+            var result = await mediator.Send(new GetPersonByIdQuery() { Id = id });
+            if (result != null)
+            {
+                var personRm = new PersonReadModel(result);
+                return Ok(personRm);
+            }
+            return NotFound();
         }
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> RemovePerson(int id)

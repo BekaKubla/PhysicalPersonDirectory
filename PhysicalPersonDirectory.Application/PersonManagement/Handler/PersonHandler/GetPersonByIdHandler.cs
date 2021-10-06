@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PhysicalPersonDirectory.Application.PersonManagement.Command.PersonCommand;
+using PhysicalPersonDirectory.Application.PersonManagement.Query.PersonQuery;
 using PhysicalPersonDirectory.Domain.Entities;
 using PhysicalPersonDirectory.Domain.IConfiguration;
 using System.Threading;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhysicalPersonDirectory.Application.PersonManagement.Handler.PersonHandler
 {
-    public class GetPersonByIdHandler : IRequestHandler<GetPersonByIdCommand, Person>
+    public class GetPersonByIdHandler : IRequestHandler<GetPersonByIdQuery, Person>
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -16,7 +16,7 @@ namespace PhysicalPersonDirectory.Application.PersonManagement.Handler.PersonHan
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Person> Handle(GetPersonByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Person> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
         {
             return await unitOfWork.Persons.GetById(request.Id);
         }
