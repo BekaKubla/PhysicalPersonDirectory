@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PhysicalPersonDirectory.Application.PersonManagement.Command.PersonCommand;
 using PhysicalPersonDirectory.Application.PersonManagement.Query.PersonQuery;
-using PhysicalPersonDirectory.Application.ViewModels.PersonRm;
 using PhysicalPersonDirectory.Application.ViewModels.PersonVm;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
 
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(CreatePersonCommand person)
+        public async Task<IActionResult> Create(CreatePersonCommand createPersonCommand)
         {
 
             if (!ModelState.IsValid)
@@ -29,33 +28,30 @@ namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
                 return NotFound();
             }
 
-            var result = await mediator.Send(new CreatePersonCommand(person.person));
-            var personRm = new PersonReadModel(result);
-            return Ok(personRm);
+            var person = await mediator.Send(new CreatePersonCommand(createPersonCommand.person));
+            var personReadModel = new PersonReadModel(person);
+            return Ok(personReadModel);
         }
 
 
-        [HttpGet("Persons")]
-        public async Task<IActionResult> GetPersons()
-        {
-            var person = await mediator.Send(new GetPersonsQuery());
+        //[HttpGet("Persons")]
+        //public async Task<IActionResult> GetPersons()
+        //{
+        //    var person = await mediator.Send(new GetPersonsQuery());
 
-            var personRm = new ListPersonsReadModel() { persons = person };
 
-            return Ok(personRm.persons);
-
-        }
+        //}
 
 
         [HttpGet("person/{id}")]
         public async Task<IActionResult> GetPersonById(int id)
         {
 
-            var result = await mediator.Send(new GetPersonByIdQuery() { Id = id });
-            if (result != null)
+            var person = await mediator.Send(new GetPersonByIdQuery() { Id = id });
+            if (person != null)
             {
-                var personRm = new PersonReadModel(result);
-                return Ok(personRm);
+                var personReadModel = new PersonReadModel(person);
+                return Ok(personReadModel);
             }
             return NotFound();
         }
@@ -64,10 +60,10 @@ namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> RemovePerson(int id)
         {
-            var findPerson = await mediator.Send(new GetPersonByIdQuery() { Id = id });
-            if (findPerson != null)
+            var person = await mediator.Send(new GetPersonByIdQuery() { Id = id });
+            if (person != null)
             {
-                return Ok(await mediator.Send(new RemovePersonCommand(findPerson)));
+                return Ok(await mediator.Send(new RemovePersonCommand(person)));
             }
             return NotFound();
 
