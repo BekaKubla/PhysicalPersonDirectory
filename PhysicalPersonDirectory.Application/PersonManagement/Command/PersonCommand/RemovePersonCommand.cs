@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using PhysicalPersonDirectory.Domain.Entities;
 
 namespace PhysicalPersonDirectory.Application.PersonManagement.Command.PersonCommand
 {
-    public class RemovePersonCommand : IRequest<bool>
+    public record RemovePersonCommand(Person person) : IRequest<bool>
     {
-        public int Id { get; set; }
+
     }
 }

@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using PhysicalPersonDirectory.Application.PersonManagement.Command.PersonCommand;
+using PhysicalPersonDirectory.Domain.Entities;
 using PhysicalPersonDirectory.Domain.IConfiguration;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PhysicalPersonDirectory.Application.PersonManagement.Handler.PersonHandler
 {
-    public class CreatePersonHandler : IRequestHandler<CreatePersonCommand, bool>
+    public class CreatePersonHandler : IRequestHandler<CreatePersonCommand, Person>
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -15,11 +16,12 @@ namespace PhysicalPersonDirectory.Application.PersonManagement.Handler.PersonHan
             this.unitOfWork = unitofwork;
         }
 
-        public async Task<bool> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
+        public async Task<Person> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
         {
-            await unitOfWork.Persons.Create(request.Person);
+            await unitOfWork.Persons.Create(request.person);
             await unitOfWork.ComplateAsync();
-            return true;
+            return request.person;
+            
         }
     }
 }

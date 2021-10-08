@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PhysicalPersonDirectory.Domain.Entities;
+﻿using PhysicalPersonDirectory.Domain.Entities;
 using PhysicalPersonDirectory.Domain.Repositories;
 using PhysicalPersonDirectory.Infrastructure.Data;
 using PhysicalPersonDirectory.Infrastructure.Repositories.Base;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PhysicalPersonDirectory.Infrastructure.Repositories
@@ -14,25 +12,19 @@ namespace PhysicalPersonDirectory.Infrastructure.Repositories
         {
 
         }
-        public async Task<bool> CreatePerson(Person person)
+        public async Task<Person> CreatePerson(Person person)
         {
 
-            if (person == null)
-            {
-                return false;
-            }
             await dbset.AddAsync(person);
-            return true;
+            return person;
+
         }
-        public async Task<bool> RemovePerson(int id)
+        public async Task<Person> RemovePerson(int id)
         {
-            var existPerson = await dbset.Where(e => e.Id == id).FirstOrDefaultAsync();
-            if (existPerson != null)
-            {
-                dbset.Remove(existPerson);
-                return true;
-            }
-            return false;
+            var existPerson = await dbset.FindAsync(id);
+            dbset.Remove(existPerson);
+            return existPerson;
+
         }
         public async Task<Person> GetPersonById(int id)
         {

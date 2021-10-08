@@ -7,7 +7,7 @@ namespace PhysicalPersonDirectory.Application.Validators.PersonValidator
     {
         public CreatePersonCommandValidator()
         {
-            RuleFor(e => e.Person.NameEn).NotNull();
+            RuleFor(e => e.person.NameEn).NotNull();
         }
     }
 }

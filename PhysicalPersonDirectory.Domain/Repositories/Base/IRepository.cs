@@ -7,7 +7,7 @@ namespace PhysicalPersonDirectory.Domain.Repositories.Base
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        Task<bool> Create(T entity);
-        Task<bool> Remove(int id);
+        Task<T> Create(T entity);
+        Task<bool> Remove(T entity);
     }
 }

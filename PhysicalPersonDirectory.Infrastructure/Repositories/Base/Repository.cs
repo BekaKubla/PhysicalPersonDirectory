@@ -19,10 +19,11 @@ namespace PhysicalPersonDirectory.Infrastructure.Repositories.Base
         }
 
 
-        public async Task<bool> Create(T entity)
+        public async Task<T> Create(T entity)
         {
             await dbset.AddAsync(entity);
-            return true;
+            return entity;
+
         }
 
         public async Task<IEnumerable<T>> GetAll()
@@ -32,23 +33,13 @@ namespace PhysicalPersonDirectory.Infrastructure.Repositories.Base
 
         public async Task<T> GetById(int id)
         {
-            var existPerson = await dbset.FindAsync(id);
-            if (existPerson == null)
-            {
-                return null;
-            }
-            return existPerson;
+            return await dbset.FindAsync(id);
         }
 
-        public async Task<bool> Remove(int id)
+        public Task<bool> Remove(T entity)
         {
-            var existPerson = await dbset.FindAsync(id);
-            if (existPerson != null)
-            {
-                dbset.Remove(existPerson);
-                return true;
-            }
-            return false;
+            dbset.Remove(entity);
+            return Task.FromResult(true);
         }
     }
 }

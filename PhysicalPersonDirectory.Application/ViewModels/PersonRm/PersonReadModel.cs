@@ -23,8 +23,6 @@ namespace PhysicalPersonDirectory.Application.ViewModels.PersonVm
         }
 
 
-
-
         public int Id { get; set; }
         public string NameGe { get; set; }
         public string NameEn { get; set; }
