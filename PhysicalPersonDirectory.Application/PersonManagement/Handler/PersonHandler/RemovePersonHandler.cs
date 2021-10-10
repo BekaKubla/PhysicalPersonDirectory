@@ -18,6 +18,7 @@ namespace PhysicalPersonDirectory.Application.PersonManagement.Handler.PersonHan
         public async Task<bool> Handle(RemovePersonCommand request, CancellationToken cancellationToken)
         {
             await unitOfWork.Persons.Remove(request.person);
+            await unitOfWork.Contacts.RemoveContact(request.ContactInfo);
             await unitOfWork.ComplateAsync();
             return true;
 

@@ -13,11 +13,13 @@ namespace PhysicalPersonDirectory.Infrastructure.Data
 
         public IPersonRepository Persons { get; private set; }
 
+        public IContactInfoRepository Contacts { get; private set; }
 
         public UnitOfWork(PersonAppDbContext context)
         {
             this.context = context;
             Persons = new PersonRepository(context);
+            Contacts = new ContactInfoRepository(context);
         }
 
 

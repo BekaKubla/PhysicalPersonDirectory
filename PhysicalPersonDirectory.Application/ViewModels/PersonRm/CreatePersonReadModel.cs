@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace PhysicalPersonDirectory.Application.ViewModels.PersonVm
+namespace PhysicalPersonDirectory.Application.ViewModels.PersonRm
 {
-    public class PersonReadModel
+    public class CreatePersonReadModel
     {
-        public PersonReadModel(Person person, ContactInfo contact)
+
+        public CreatePersonReadModel(Person person)
         {
             Id = person.Id;
             NameEn = person.NameEn;
@@ -17,7 +18,7 @@ namespace PhysicalPersonDirectory.Application.ViewModels.PersonVm
             DateOfBirth = person.DateOfBirth;
             Adress = person.Adress;
             ImgUrl = person.ImgUrl;
-            ContactInfos = contact;
+            ContactInfos = person.ContactInfos;
             RelatedTo = person.RelatedTo;
             Relationship = person.Relationship;
         }
@@ -32,7 +33,7 @@ namespace PhysicalPersonDirectory.Application.ViewModels.PersonVm
         public DateTime DateOfBirth { get; set; }
         public string Adress { get; set; }
         public string ImgUrl { get; set; }
-        public ContactInfo ContactInfos { get; set; }
+        public IEnumerable<ContactInfo> ContactInfos { get; set; } = new List<ContactInfo>();
         public IEnumerable<RelationPerson> Relationship { get; set; } = new List<RelationPerson>();
         public IEnumerable<RelationPerson> RelatedTo { get; set; } = new List<RelationPerson>();
     }

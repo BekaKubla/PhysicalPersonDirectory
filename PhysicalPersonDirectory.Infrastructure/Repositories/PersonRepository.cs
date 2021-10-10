@@ -28,7 +28,7 @@ namespace PhysicalPersonDirectory.Infrastructure.Repositories
         }
         public async Task<Person> GetPersonById(int id)
         {
-            return await dbset.FindAsync(id); ;
+            return await dbset.FindAsync(id);
         }
 
     }
