@@ -5,7 +5,6 @@ using PhysicalPersonDirectory.Domain.IConfiguration;
 using PhysicalPersonDirectory.Domain.Repositories;
 using PhysicalPersonDirectory.Infrastructure.Data;
 using PhysicalPersonDirectory.Infrastructure.Repositories;
-using System.Reflection;
 
 namespace PhysicalPersonDirectory.Infrastructure.DepedencyManagement
 {
@@ -17,10 +16,8 @@ namespace PhysicalPersonDirectory.Infrastructure.DepedencyManagement
 
             services.AddTransient<IPersonRepository, PersonRepository>();
 
+            services.AddMediatR(typeof(GetFullPersonQuery).Assembly);
 
-            services.AddMediatR(typeof(GetPersonsQuery).Assembly);
-
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
     }
 }

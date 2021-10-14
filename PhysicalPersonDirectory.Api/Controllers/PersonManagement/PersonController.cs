@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhysicalPersonDirectory.Application.PersonManagement.Command.PersonCommand;
-using PhysicalPersonDirectory.Application.PersonManagement.Query.ContactQuery;
 using PhysicalPersonDirectory.Application.PersonManagement.Query.PersonQuery;
 using PhysicalPersonDirectory.Application.ViewModels.PersonRm;
 using PhysicalPersonDirectory.Application.ViewModels.PersonVm;
@@ -36,24 +35,23 @@ namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
         }
 
 
-        //[HttpGet]
+        [HttpGet]
 
-        //public async Task<PersonReadModel[]> GetPersons()
-        //{
-        //    var person = await mediator.Send(new GetPersonsQuery());
+        public async Task<IActionResult> GetPersons()
+        {
+            return Ok(await mediator.Send(new GetFullPersonQuery()));
 
-        //}
+        }
 
 
         [HttpGet("person/{id}")]
         public async Task<IActionResult> GetPersonById(int id)
         {
 
-            var person = await mediator.Send(new GetPersonByIdQuery() { Id = id });
-            var contact = await mediator.Send(new GetContactByIdQuery() { Id = id });
+            var person = await mediator.Send(new GetFullPersonByIdQuery() { Id = id });
             if (person != null)
             {
-                var personReadModel = new PersonReadModel(person, contact);
+                var personReadModel = new PersonReadModel(person);
                 return Ok(personReadModel);
             }
             return NotFound();
@@ -63,11 +61,10 @@ namespace PhysicalPersonDirectory.Api.Controllers.PersonManagement
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> RemovePerson(int id)
         {
-            var person = await mediator.Send(new GetPersonByIdQuery() { Id = id });
-            var contact = await mediator.Send(new GetContactByIdQuery() { Id = id });
+            var person = await mediator.Send(new GetFullPersonByIdQuery() { Id = id });
             if (person != null)
             {
-                return Ok(await mediator.Send(new RemovePersonCommand(person, contact)));
+                return Ok(await mediator.Send(new RemovePersonCommand(person)));
             }
             return NotFound();
 

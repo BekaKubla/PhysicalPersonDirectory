@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PhysicalPersonDirectory.Application.PersonManagement.Query.PersonQuery
 {
-    public class GetPersonsQuery : IRequest<IEnumerable<Person>>
+    public record GetFullPersonQuery() : IRequest<IEnumerable<Person>>
     {
 
     }

@@ -1,9 +1,10 @@
-﻿using PhysicalPersonDirectory.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PhysicalPersonDirectory.Domain.Entities;
 using PhysicalPersonDirectory.Domain.Repositories;
 using PhysicalPersonDirectory.Infrastructure.Data;
 using PhysicalPersonDirectory.Infrastructure.Repositories.Base;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-
 namespace PhysicalPersonDirectory.Infrastructure.Repositories
 {
     public class PersonRepository : Repository<Person>, IPersonRepository
@@ -19,17 +20,27 @@ namespace PhysicalPersonDirectory.Infrastructure.Repositories
             return person;
 
         }
+
         public async Task<Person> RemovePerson(int id)
         {
             var existPerson = await dbset.FindAsync(id);
+            await dbset.Include(e => e.ContactInfos).ToListAsync();
             dbset.Remove(existPerson);
             return existPerson;
 
         }
-        public async Task<Person> GetPersonById(int id)
+
+        public async Task<Person> GetFullPersonById(int id)
         {
-            return await dbset.FindAsync(id);
+            var person = await dbset.FindAsync(id);
+            await dbset.Include(e => e.ContactInfos).ToListAsync();
+            return person;
+
         }
 
+        public async Task<List<Person>> GetFullPersons()
+        {
+            return await dbset.Include(e => e.ContactInfos).ToListAsync();
+        }
     }
 }
